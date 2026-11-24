@@ -46,3 +46,11 @@ Service worker menyimpan app shell setelah kunjungan pertama. OCR memakai librar
 ## Verifikasi
 
 Aplikasi ini alat bantu perhitungan, bukan pengganti SOP, pemeriksaan analis, atau validasi laboratorium. Periksa parameter, satuan, data mentah, dan hasil sebelum digunakan sebagai data resmi.
+
+
+## V3 Premium update
+- Premium visual theme with cinematic 5-second intro video (`assets/intro.mp4`).
+- Guest entry screen; no password or account system is required. Guest mode is a local front-end entry only, not secure authentication.
+- Optional ambient background sound synthesized by the browser after the user taps the guest button. It can be switched off.
+- Existing FFA calculation, OCR, editable rows, and PNG report export are retained.
+- Replace the repository files with the contents of this ZIP to publish V3. Keep the `.github/workflows/deploy.yml` file.

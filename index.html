@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#991b1b">
+<meta name="theme-color" content="#17212b">
 <meta name="description" content="Aplikasi bantu pemindaian catatan dan perhitungan Free Fatty Acid (FFA).">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-<title>FFA Smart Scanner</title>
+<title>FFA Smart Scanner • Premium</title>
 <style>
 :root{--red:#991b1b;--red2:#b91c1c;--ink:#171717;--muted:#737373;--bg:#f5f5f5;--line:#e5e5e5}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
@@ -27,9 +27,42 @@ td input{width:100%;min-width:72px;border:1px solid #ddd;border-radius:7px;paddi
 .notice{background:#fffbeb;border:1px solid #fde68a;color:#854d0e;padding:10px;border-radius:10px;font-size:12px;line-height:1.5}
 footer{text-align:center;color:#888;font-size:11px;padding:12px}
 @media(max-width:480px){.card{padding:12px}.btn{flex:1}.grid{gap:8px}}
+
+/* V3 PREMIUM EXPERIENCE */
+:root{--red:#8b2635;--red2:#a33b49;--ink:#17212b;--muted:#718096;--bg:#eef1f4;--line:#dce2e8;--gold:#c5a46d}
+body{background:radial-gradient(circle at 10% 0%,#f8f4ee 0,#eef1f4 42%,#e8edf1 100%);color:#1d2935}
+header{background:linear-gradient(120deg,#17212b,#263746 65%,#51343a);padding:22px 17px 25px;border-bottom:3px solid var(--gold)}
+.logo{background:linear-gradient(145deg,#b78e5a,#e1c99d);color:#17212b;border:0;box-shadow:0 8px 25px #0003}
+.card{border:1px solid #dce2e8;border-radius:18px;box-shadow:0 12px 32px #2537460c}
+.btn{background:linear-gradient(135deg,#8b2635,#a33b49);box-shadow:0 5px 14px #8b263522}.btn.secondary{background:#f7f8fa;box-shadow:none}
+.formula{background:#f8f3eb;border-color:#e5d5b9}.notice{border-radius:12px}
+#introScreen,#loginScreen{position:fixed;inset:0;z-index:1000;background:#111b24;color:white;display:flex;align-items:center;justify-content:center;padding:22px}
+#introScreen video{position:absolute;width:100%;height:100%;object-fit:cover;inset:0;opacity:.82}
+.introShade{position:absolute;inset:0;background:linear-gradient(180deg,#10182055,#101820aa)}
+.introSkip{position:absolute;right:20px;top:22px;z-index:2;background:#ffffff20;color:white;border:1px solid #ffffff66;border-radius:999px;padding:10px 16px}
+#loginScreen{display:none;background:radial-gradient(circle at 50% 25%,#344653,#17212b 58%,#101820)}
+.loginPanel{position:relative;z-index:1;width:min(430px,100%);text-align:center;border:1px solid #ffffff2c;background:#ffffff0d;backdrop-filter:blur(14px);border-radius:26px;padding:30px 24px;box-shadow:0 25px 80px #0005}
+.loginMark{width:76px;height:76px;border-radius:23px;margin:0 auto 18px;display:grid;place-items:center;background:linear-gradient(145deg,#c5a46d,#f0dfbd);color:#17212b;font-size:34px}
+.loginPanel h1{font-size:24px;letter-spacing:1px}.loginPanel p{color:#c7d0d8;font-size:13px;line-height:1.6}
+.loginPanel .btn{width:100%;padding:14px;margin-top:10px}.soundToggle{display:flex;align-items:center;justify-content:center;gap:8px;color:#d7e0e6;font-size:12px;margin-top:18px}
+#appContent{display:none}.premiumTag{color:#e3c99b;font-size:10px;letter-spacing:2px;margin-bottom:7px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
+<section id="introScreen" aria-label="Intro FFA Smart Scanner">
+ <video id="introVideo" autoplay muted playsinline preload="auto"><source src="assets/intro.mp4" type="video/mp4"></video>
+ <div class="introShade"></div><button class="introSkip" id="skipIntro">Lewati intro</button>
+</section>
+<section id="loginScreen" aria-label="Login tamu">
+ <div class="loginPanel"><div class="premiumTag">QUALITY CONTROL • LABORATORY TOOLS</div><div class="loginMark">🧪</div>
+ <h1>FFA SMART SCANNER</h1><p>Selamat datang. Ruang kerja analisis FFA siap digunakan.<br>Masuk sebagai tamu untuk melanjutkan.</p>
+ <button class="btn" id="guestLogin">MASUK SEBAGAI TAMU</button>
+ <label class="soundToggle"><input type="checkbox" id="musicToggle" checked> Musik latar aktif</label>
+ <p style="font-size:10px;margin-top:18px">PREMIUM EDITION • V3.0</p></div>
+</section>
+<div id="appContent">
 <header><div class="head"><div class="logo">🧪</div><div><h1>FFA SMART SCANNER</h1><p>Laboratory calculation assistant</p></div></div></header>
 <main>
 <section class="card">
@@ -117,5 +150,19 @@ $('export').onclick=async()=>{lastBlob=await makeReport();if(!lastBlob)return;$(
 $('share').onclick=async()=>{if(!lastBlob)return;const file=new File([lastBlob],'hasil-analisis-FFA.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Hasil Analisis FFA'})}else{const a=document.createElement('a');a.href=URL.createObjectURL(lastBlob);a.download='hasil-analisis-FFA.png';a.click();alert('Foto diunduh. Kamu bisa mengirimkannya melalui WhatsApp.')}};
 $('reportDate').value=new Date().toISOString().slice(0,10);
 if('serviceWorker'in navigator&&location.protocol!=='file:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(e=>console.log('SW:',e)))}
+</script>
+</div>
+<script>
+// Intro, guest access, and optional synthesized ambient soundtrack.
+const intro=document.getElementById("introScreen"), login=document.getElementById("loginScreen"), app=document.getElementById("appContent");
+let musicCtx=null,musicNodes=[],musicOn=true;
+function stopMusic(){musicNodes.forEach(n=>{try{n.stop&&n.stop();n.disconnect&&n.disconnect()}catch(e){}});musicNodes=[];if(musicCtx){musicCtx.close().catch(()=>{});musicCtx=null}}
+function startMusic(){if(!musicOn||musicCtx)return;try{musicCtx=new (window.AudioContext||window.webkitAudioContext)();const gain=musicCtx.createGain();gain.gain.value=.025;gain.connect(musicCtx.destination);[110,164.81,220].forEach((hz,i)=>{const o=musicCtx.createOscillator(),g=musicCtx.createGain();o.type="sine";o.frequency.value=hz;g.gain.value=i===0?.5:.22;o.connect(g);g.connect(gain);o.start();musicNodes.push(o,g)});musicNodes.push(gain)}catch(e){}}
+function showLogin(){intro.style.display="none";login.style.display="flex";document.getElementById("introVideo").pause()}
+document.getElementById("skipIntro").onclick=showLogin;document.getElementById("introVideo").addEventListener("ended",showLogin);
+document.getElementById("musicToggle").addEventListener("change",e=>{musicOn=e.target.checked;if(musicOn&&app.style.display==="block")startMusic();else stopMusic();document.querySelector(".soundToggle").lastChild.textContent=musicOn?" Musik latar aktif":" Musik latar mati"});
+document.getElementById("guestLogin").onclick=()=>{login.style.display="none";app.style.display="block";startMusic()};
+// If the browser blocks autoplay, the intro can still be skipped manually.
+const v=document.getElementById("introVideo");v.play().catch(()=>{});
 </script>
 </body></html>
