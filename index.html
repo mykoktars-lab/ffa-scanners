@@ -39,7 +39,16 @@ header{background:linear-gradient(120deg,#17212b,#263746 65%,#51343a);padding:22
 #introScreen,#loginScreen{position:fixed;inset:0;z-index:1000;background:#111b24;color:white;display:flex;align-items:center;justify-content:center;padding:22px}
 #introScreen video{position:absolute;width:100%;height:100%;object-fit:cover;inset:0;opacity:.82}
 .introShade{position:absolute;inset:0;background:linear-gradient(180deg,#10182055,#101820aa)}
-.introSkip{position:absolute;right:20px;top:22px;z-index:2;background:#ffffff20;color:white;border:1px solid #ffffff66;border-radius:999px;padding:10px 16px}
+.introSkip{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:2;background:linear-gradient(135deg,#c5a46d,#f1dfb8);color:#17212b;border:1px solid #fff8;border-radius:999px;padding:12px 34px;font-weight:800;letter-spacing:3px;text-transform:uppercase;box-shadow:0 0 24px #c5a46d88,0 0 55px #5de4ff33;cursor:pointer}
+.introSkip:after{content:"";position:absolute;inset:-5px;border:1px solid #d7c49b88;border-radius:999px;animation:skipPulse 2s infinite}
+@keyframes skipPulse{0%,100%{opacity:.25;transform:scale(.98)}50%{opacity:1;transform:scale(1.06)}}
+.introSkip:focus-visible{outline:2px solid #fff;outline-offset:5px}
+#introScreen video{object-fit:cover}
+.backupBar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.fileChoice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.fileChoice .btn{display:flex;justify-content:center;align-items:center;min-height:48px}
+.fileChoice input{display:none}
+@media(max-width:480px){.fileChoice{grid-template-columns:1fr 1fr}}
 #loginScreen{display:none;background:radial-gradient(circle at 50% 25%,#344653,#17212b 58%,#101820)}
 .loginPanel{position:relative;z-index:1;width:min(430px,100%);text-align:center;border:1px solid #ffffff2c;background:#ffffff0d;backdrop-filter:blur(14px);border-radius:26px;padding:30px 24px;box-shadow:0 25px 80px #0005}
 .loginMark{width:76px;height:76px;border-radius:23px;margin:0 auto 18px;display:grid;place-items:center;background:linear-gradient(145deg,#c5a46d,#f0dfbd);color:#17212b;font-size:34px}
@@ -53,13 +62,13 @@ header{background:linear-gradient(120deg,#17212b,#263746 65%,#51343a);padding:22
 <body>
 <section id="introScreen" aria-label="Intro FFA Smart Scanner">
  <video id="introVideo" autoplay muted playsinline preload="auto"><source src="assets/intro.mp4" type="video/mp4"></video>
- <div class="introShade"></div><button class="introSkip" id="skipIntro">Lewati intro</button>
+ <div class="introShade"></div><button class="introSkip" id="skipIntro">LEWATI</button>
 </section>
 <section id="loginScreen" aria-label="Login tamu">
  <div class="loginPanel"><div class="premiumTag">QUALITY CONTROL • LABORATORY TOOLS</div><div class="loginMark">🧪</div>
  <h1>FFA SMART SCANNER</h1><p>Selamat datang. Ruang kerja analisis FFA siap digunakan.<br>Masuk sebagai tamu untuk melanjutkan.</p>
  <button class="btn" id="guestLogin">MASUK SEBAGAI TAMU</button>
- <label class="soundToggle"><input type="checkbox" id="musicToggle" checked> Musik latar aktif</label>
+ 
  <p style="font-size:10px;margin-top:18px">PREMIUM EDITION • V3.0</p></div>
 </section>
 <div id="appContent">
@@ -67,11 +76,16 @@ header{background:linear-gradient(120deg,#17212b,#263746 65%,#51343a);padding:22
 <main>
 <section class="card">
 <h2>1. Foto catatan dua kolom</h2>
-<p class="hint">Ambil foto atau pilih gambar catatan yang berisi berat sampel dan volume titrasi. Pastikan tulisan fokus, terang, dan tidak miring.</p>
-<input id="photo" type="file" accept="image/*" capture="environment">
+<p class="hint">Pilih foto dari galeri atau ambil langsung dengan kamera. Untuk catatan dua kolom, usahakan kolom berat di kiri dan volume titrasi di kanan.</p>
+<div class="fileChoice">
+<label class="btn secondary" for="galleryPhoto">▣ PILIH GALERI<input id="galleryPhoto" type="file" accept="image/*"></label>
+<label class="btn secondary" for="cameraPhoto">◎ BUKA KAMERA<input id="cameraPhoto" type="file" accept="image/*" capture="environment"></label>
+</div>
+<input id="photo" type="file" accept="image/*" style="display:none">
 <img id="preview" class="preview" alt="Pratinjau foto catatan">
 <div class="actions"><button class="btn" id="scan">Baca foto dengan OCR</button><button class="btn secondary" id="clearPhoto">Hapus foto</button></div>
-<div class="status" id="ocrStatus">OCR memerlukan koneksi internet untuk memuat mesin pengenal teks.</div>
+<div class="status" id="ocrStatus">OCR akan membaca dua kolom secara terpisah. Hasil tulisan tangan tetap perlu diperiksa sebelum dihitung.</div>
+<p class="hint">Panduan pembacaan: berat sampel biasanya sekitar 15 g (misalnya 15,038), sedangkan volume titrasi umumnya 0,5–2,9 mL. Petunjuk ini membantu menyaring kandidat, bukan menggantikan pemeriksaan foto.</p>
 </section>
 
 <section class="card">
@@ -97,11 +111,17 @@ header{background:linear-gradient(120deg,#17212b,#263746 65%,#51343a);padding:22
 <div class="field"><label>Judul laporan</label><input id="reportTitle" value="HASIL ANALISIS FFA"></div>
 <div class="field" style="margin-top:9px"><label>Tanggal analisis</label><input id="reportDate" type="date"></div>
 <div class="actions" style="margin-top:12px"><button class="btn" id="export">Buat foto hasil FFA</button><button class="btn secondary" id="share" disabled>Bagikan foto</button></div>
-<p class="hint">Foto laporan PNG dapat disimpan atau dibagikan melalui aplikasi yang tersedia di HP.</p>
+<p class="hint">Foto laporan PNG dirapikan dengan judul, parameter, tabel, dan catatan verifikasi. Data kerja tersimpan otomatis di perangkat ini.</p>
 <canvas id="report" style="display:none"></canvas>
 </section>
+<section class="card">
+<h2>5. Penyimpanan &amp; cadangan data</h2>
+<p class="hint">Data tersimpan otomatis di browser/perangkat ini. Buat cadangan JSON secara berkala agar data bisa dipindahkan atau dipulihkan.</p>
+<div class="backupBar"><button class="btn secondary" id="backupData">Unduh backup data</button><label class="btn secondary" for="restoreFile">Pulihkan backup<input id="restoreFile" type="file" accept="application/json,.json" style="display:none"></label></div>
+<div class="status" id="saveStatus">Penyimpanan lokal siap.</div>
+</section>
 <div class="notice"><b>Catatan verifikasi:</b> Aplikasi ini alat bantu hitung. OCR bukan pembacaan yang dijamin benar. Periksa seluruh angka dan verifikasi hasil sesuai SOP laboratorium sebelum dipakai sebagai data resmi.</div>
-<footer>FFA Smart Scanner • V1.0 • Laboratory Assistant</footer>
+<footer>FFA Smart Scanner • V4.0 • Laboratory Assistant</footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
@@ -109,22 +129,55 @@ const $=id=>document.getElementById(id);let lastBlob=null;
 function addRow(w='',v=''){const tr=document.createElement('tr');tr.innerHTML=`<td>${$('rows').children.length+1}</td><td><input class="weight" type="number" step="any" placeholder="Berat"></td><td><input class="volume" type="number" step="any" placeholder="Volume"></td><td class="result">—</td>`;tr.querySelector('.weight').value=w;tr.querySelector('.volume').value=v;$('rows').appendChild(tr)}
 function renumber(){[...$('rows').children].forEach((r,i)=>r.children[0].textContent=i+1)}
 for(let i=0;i<5;i++)addRow();
-$('photo').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;$('preview').src=URL.createObjectURL(f);$('preview').style.display='block';$('ocrStatus').textContent='Foto siap dipindai.'});
-$('clearPhoto').onclick=()=>{$('photo').value='';$('preview').removeAttribute('src');$('preview').style.display='none';$('ocrStatus').textContent='Foto dihapus.'};
+function usePhoto(f){if(!f)return;$('photo').files=null;const dt=new DataTransfer();dt.items.add(f);$('photo').files=dt.files;$('preview').src=URL.createObjectURL(f);$('preview').style.display='block';$('ocrStatus').textContent='Foto siap dipindai.'}
+$('galleryPhoto').addEventListener('change',e=>usePhoto(e.target.files[0]));
+$('cameraPhoto').addEventListener('change',e=>usePhoto(e.target.files[0]));
+$('clearPhoto').onclick=()=>{$('photo').value='';$('galleryPhoto').value='';$('cameraPhoto').value='';$('preview').removeAttribute('src');$('preview').style.display='none';$('ocrStatus').textContent='Foto dihapus.'};
+function normalizeOCRNumbers(text){
+ const raw=text.replace(/[oO]/g,'0').replace(/[lI|]/g,'1');
+ const matches=raw.match(/\\d{1,3}(?:[.,\\s]\\d{1,4})?|\\d{1,3}/g)||[];
+ return matches.map(t=>{
+   let x=t.trim().replace(/\\s/g,'');
+   if(/[.,]/.test(x)){const parts=x.split(/[.,]/);x=parts[0]+'.'+parts.slice(1).join('')}
+   return Number(x)
+ }).filter(n=>Number.isFinite(n)&&n>0);
+}
+async function prepCanvas(file){
+ const img=await createImageBitmap(file);const maxW=2400,scale=Math.min(2.5,maxW/img.width);
+ const c=document.createElement('canvas');c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);
+ const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(img,0,0,c.width,c.height);
+ const im=x.getImageData(0,0,c.width,c.height),d=im.data;
+ for(let i=0;i<d.length;i+=4){let g=.299*d[i]+.587*d[i+1]+.114*d[i+2];g=(g-128)*1.55+128;g=Math.max(0,Math.min(255,g));d[i]=d[i+1]=d[i+2]=g}
+ x.putImageData(im,0,0);return c;
+}
+async function recognizeCanvas(worker,canvas){
+ const {data}=await worker.recognize(canvas);return {text:data.text||'',tsv:data.tsv||''};
+}
 $('scan').onclick=async()=>{
- const f=$('photo').files[0];if(!f){$('ocrStatus').textContent='Pilih atau foto catatan terlebih dahulu.';return}
- if(!window.Tesseract){$('ocrStatus').textContent='Mesin OCR belum termuat. Periksa koneksi internet dan muat ulang halaman.';return}
- $('scan').disabled=true;$('ocrStatus').textContent='Sedang membaca foto…';
+ const f=$('photo').files[0];if(!f){$('ocrStatus').textContent='Pilih foto dari galeri atau kamera terlebih dahulu.';return}
+ if(!window.Tesseract){$('ocrStatus').textContent='Mesin OCR belum termuat. Periksa koneksi internet.';return}
+ $('scan').disabled=true;$('ocrStatus').textContent='Meningkatkan kontras dan membaca kedua kolom…';
+ let worker;
  try{
-  const worker=await Tesseract.createWorker('eng');await worker.setParameters({tessedit_char_whitelist:'0123456789.,'});
-  const {data}=await worker.recognize(f);await worker.terminate();
-  const tokens=(data.text.match(/\d+[.,]\d+|\d+/g)||[]).map(x=>x.replace(',','.'));
-  const nums=tokens.map(Number).filter(n=>Number.isFinite(n));
-  if(nums.length<2)throw new Error('Angka belum terbaca dengan cukup jelas.');
-  $('rows').innerHTML='';for(let i=0;i+1<nums.length;i+=2)addRow(nums[i],nums[i+1]);if(nums.length%2)addRow(nums[nums.length-1],'');
-  $('ocrStatus').textContent=`Terbaca ${nums.length} angka. Angka dipasangkan sesuai urutan OCR, bukan pemahaman kolom. Cocokkan setiap pasangan dengan foto dan koreksi bila perlu.`;
- }catch(e){$('ocrStatus').textContent='Belum berhasil membaca: '+e.message+' Coba foto lebih dekat/terang atau masukkan angka manual.'}
- finally{$('scan').disabled=false}
+  const canvas=await prepCanvas(f),mid=Math.floor(canvas.width/2);
+  worker=await Tesseract.createWorker('eng');
+  await worker.setParameters({tessedit_char_whitelist:'0123456789.,',preserve_interword_spaces:'1',user_defined_dpi:'300'});
+  const left=document.createElement('canvas'),right=document.createElement('canvas');
+  left.width=mid;left.height=canvas.height;left.getContext('2d').drawImage(canvas,0,0,mid,canvas.height,0,0,mid,canvas.height);
+  right.width=canvas.width-mid;right.height=canvas.height;right.getContext('2d').drawImage(canvas,mid,0,right.width,canvas.height,0,0,right.width,canvas.height);
+  const L=await recognizeCanvas(worker,left),R=await recognizeCanvas(worker,right);
+  const weights=normalizeOCRNumbers(L.text).filter(n=>n>=10&&n<=20);
+  const volumes=normalizeOCRNumbers(R.text).filter(n=>n>=0.5&&n<=2.9);
+  const allL=normalizeOCRNumbers(L.text),allR=normalizeOCRNumbers(R.text);
+  const ws=weights.length?weights:allL,vs=volumes.length?volumes:allR;
+  const count=Math.max(ws.length,vs.length);
+  if(!count)throw new Error('Angka belum dikenali. Coba foto lebih dekat, tegak lurus, dan terang.');
+  $('rows').innerHTML='';
+  for(let i=0;i<count;i++)addRow(ws[i]??'',vs[i]??'');
+  $('ocrStatus').textContent=`Kolom kiri: ${allL.length} kandidat; kolom kanan: ${allR.length} kandidat. Sistem memprioritaskan berat 10–20 g dan volume 0,5–2,9 mL. Periksa urutan, koma desimal, dan setiap angka pada tabel; tulisan tangan tidak selalu terbaca tepat.`;
+  saveData();
+ }catch(e){$('ocrStatus').textContent='Pembacaan belum berhasil: '+e.message+' Masukkan angka secara manual bila perlu.'}
+ finally{if(worker)await worker.terminate();$('scan').disabled=false}
 };
 $('addRow').onclick=()=>addRow();$('removeRow').onclick=()=>{if($('rows').children.length>1){$('rows').lastElementChild.remove();renumber()}};
 $('calculate').onclick=()=>{
@@ -136,14 +189,24 @@ $('calculate').onclick=()=>{
 async function makeReport(){
  $('calculate').click();const rows=[...$('rows').children].filter(r=>r.querySelector('.result').textContent!=='—');
  if(!rows.length){$('calcStatus').textContent='Isi berat dan volume yang valid terlebih dahulu.';return null}
- const c=$('report'),ctx=c.getContext('2d'),W=1000,top=260,rowH=58;c.width=W;c.height=top+rows.length*rowH+100;
- ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#991b1b';ctx.fillRect(0,0,W,150);
- ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText($('reportTitle').value||'HASIL ANALISIS FFA',55,70);ctx.font='22px Arial';ctx.fillText('FFA SMART SCANNER',55,112);
- ctx.fillStyle='#222';ctx.font='20px Arial';ctx.fillText('Tanggal: '+($('reportDate').value||new Date().toISOString().slice(0,10)),55,195);
- ctx.font='18px Arial';ctx.fillText(`Faktor: ${$('factor').value}     Normalitas NaOH: ${$('normality').value}`,55,230);
- const xs=[70,250,500,750],headers=['No.','Berat (g)','Volume (mL)','FFA (%)'];ctx.fillStyle='#f3f4f6';ctx.fillRect(45,top-10,910,55);ctx.fillStyle='#333';ctx.font='bold 20px Arial';headers.forEach((h,i)=>ctx.fillText(h,xs[i],top+25));
- rows.forEach((r,i)=>{let y=top+55+i*rowH;if(i%2===0){ctx.fillStyle='#fafafa';ctx.fillRect(45,y-35,910,rowH)}ctx.fillStyle='#222';ctx.font='20px Arial';[i+1,r.querySelector('.weight').value,r.querySelector('.volume').value,r.querySelector('.result').textContent].forEach((v,j)=>ctx.fillText(String(v),xs[j],y));ctx.strokeStyle='#e5e5e5';ctx.beginPath();ctx.moveTo(45,y+12);ctx.lineTo(955,y+12);ctx.stroke()});
- ctx.fillStyle='#777';ctx.font='15px Arial';ctx.fillText('Periksa dan verifikasi data sesuai SOP laboratorium.',55,c.height-35);
+ const c=$('report'),ctx=c.getContext('2d'),W=1200,pad=72,top=390,rowH=66;
+ c.width=W;c.height=top+rows.length*rowH+190;
+ ctx.fillStyle='#f3f5f7';ctx.fillRect(0,0,W,c.height);
+ ctx.fillStyle='#17212b';ctx.fillRect(0,0,W,260);
+ ctx.fillStyle='#c5a46d';ctx.fillRect(pad,65,8,125);
+ ctx.fillStyle='#d8c39c';ctx.font='bold 20px Arial';ctx.fillText('QUALITY CONTROL • LABORATORY REPORT',pad+34,82);
+ ctx.fillStyle='#fff';ctx.font='bold 42px Arial';ctx.fillText(($('reportTitle').value||'HASIL ANALISIS FFA').toUpperCase(),pad+34,145);
+ ctx.fillStyle='#dbe3e9';ctx.font='23px Arial';ctx.fillText('FFA SMART SCANNER',pad+34,192);
+ ctx.fillStyle='#fff';ctx.font='20px Arial';ctx.fillText('Tanggal: '+($('reportDate').value||new Date().toLocaleDateString('id-ID')),pad+34,235);
+ ctx.fillStyle='#fff';ctx.fillRect(pad,300,W-pad*2,120);ctx.strokeStyle='#e3d6bf';ctx.lineWidth=2;ctx.strokeRect(pad,300,W-pad*2,120);
+ ctx.fillStyle='#697586';ctx.font='bold 17px Arial';ctx.fillText('PARAMETER ANALISIS',pad+25,337);
+ ctx.fillStyle='#17212b';ctx.font='22px Arial';ctx.fillText('Faktor asam oleat: '+$('factor').value,pad+25,382);ctx.fillText('Normalitas NaOH: '+$('normality').value,pad+470,382);
+ const xs=[pad+20,pad+260,pad+570,pad+890],headers=['NO.','BERAT (g)','VOLUME (mL)','FFA (%)'];
+ ctx.fillStyle='#263746';ctx.fillRect(pad,top,W-pad*2,62);ctx.fillStyle='#fff';ctx.font='bold 20px Arial';headers.forEach((h,i)=>ctx.fillText(h,xs[i],top+39));
+ rows.forEach((r,i)=>{const y=top+62+i*rowH;if(i%2===0){ctx.fillStyle='#fff';ctx.fillRect(pad,y,W-pad*2,rowH)}else{ctx.fillStyle='#e9edf1';ctx.fillRect(pad,y,W-pad*2,rowH)}ctx.fillStyle='#263746';ctx.font='22px Arial';[String(i+1),r.querySelector('.weight').value,r.querySelector('.volume').value,r.querySelector('.result').textContent].forEach((v,j)=>ctx.fillText(v,xs[j],y+42));ctx.strokeStyle='#d8dee5';ctx.beginPath();ctx.moveTo(pad,y+rowH);ctx.lineTo(W-pad,y+rowH);ctx.stroke()});
+ const fy=top+62+rows.length*rowH+65;ctx.fillStyle='#17212b';ctx.font='bold 17px Arial';ctx.fillText('CATATAN VERIFIKASI',pad,fy);
+ ctx.fillStyle='#64748b';ctx.font='17px Arial';ctx.fillText('Periksa kembali data mentah dan verifikasi hasil sesuai SOP laboratorium.',pad,fy+32);
+ ctx.fillText('Dibuat dengan FFA Smart Scanner • Dokumen bantu analisis',pad,fy+70);
  return new Promise(resolve=>c.toBlob(resolve,'image/png'));
 }
 $('export').onclick=async()=>{lastBlob=await makeReport();if(!lastBlob)return;$('share').disabled=false;const a=document.createElement('a');a.href=URL.createObjectURL(lastBlob);a.download='hasil-analisis-FFA.png';a.click()};
@@ -153,16 +216,36 @@ if('serviceWorker'in navigator&&location.protocol!=='file:'){window.addEventList
 </script>
 </div>
 <script>
-// Intro, guest access, and optional synthesized ambient soundtrack.
-const intro=document.getElementById("introScreen"), login=document.getElementById("loginScreen"), app=document.getElementById("appContent");
-let musicCtx=null,musicNodes=[],musicOn=true;
-function stopMusic(){musicNodes.forEach(n=>{try{n.stop&&n.stop();n.disconnect&&n.disconnect()}catch(e){}});musicNodes=[];if(musicCtx){musicCtx.close().catch(()=>{});musicCtx=null}}
-function startMusic(){if(!musicOn||musicCtx)return;try{musicCtx=new (window.AudioContext||window.webkitAudioContext)();const gain=musicCtx.createGain();gain.gain.value=.025;gain.connect(musicCtx.destination);[110,164.81,220].forEach((hz,i)=>{const o=musicCtx.createOscillator(),g=musicCtx.createGain();o.type="sine";o.frequency.value=hz;g.gain.value=i===0?.5:.22;o.connect(g);g.connect(gain);o.start();musicNodes.push(o,g)});musicNodes.push(gain)}catch(e){}}
+// Intro, guest mode, automatic local save, and backup/restore.
+const intro=document.getElementById("introScreen"),login=document.getElementById("loginScreen"),app=document.getElementById("appContent");
 function showLogin(){intro.style.display="none";login.style.display="flex";document.getElementById("introVideo").pause()}
-document.getElementById("skipIntro").onclick=showLogin;document.getElementById("introVideo").addEventListener("ended",showLogin);
-document.getElementById("musicToggle").addEventListener("change",e=>{musicOn=e.target.checked;if(musicOn&&app.style.display==="block")startMusic();else stopMusic();document.querySelector(".soundToggle").lastChild.textContent=musicOn?" Musik latar aktif":" Musik latar mati"});
-document.getElementById("guestLogin").onclick=()=>{login.style.display="none";app.style.display="block";startMusic()};
-// If the browser blocks autoplay, the intro can still be skipped manually.
+document.getElementById("skipIntro").onclick=showLogin;
+document.getElementById("introVideo").addEventListener("ended",showLogin);
+document.getElementById("guestLogin").onclick=()=>{login.style.display="none";app.style.display="block";restoreLocalData()};
+const STORE_KEY="ffaSmartScanner.data.v4";
+function collectData(){
+ return {version:4,savedAt:new Date().toISOString(),factor:$('factor').value,normality:$('normality').value,reportTitle:$('reportTitle').value,reportDate:$('reportDate').value,
+ rows:[...$('rows').children].map(r=>({weight:r.querySelector('.weight').value,volume:r.querySelector('.volume').value}))};
+}
+let saveTimer;
+function saveData(){
+ clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem(STORE_KEY,JSON.stringify(collectData()));$('saveStatus').textContent='Tersimpan otomatis di perangkat ini • '+new Date().toLocaleTimeString('id-ID')}catch(e){$('saveStatus').textContent='Penyimpanan penuh/tidak tersedia. Unduh backup JSON.'}},250);
+}
+function applyData(d){
+ if(!d||!Array.isArray(d.rows))throw new Error('Format backup tidak dikenali');
+ $('factor').value=d.factor??'25.6';$('normality').value=d.normality??'0.0429';$('reportTitle').value=d.reportTitle??'HASIL ANALISIS FFA';$('reportDate').value=d.reportDate??new Date().toISOString().slice(0,10);
+ $('rows').innerHTML='';d.rows.forEach(r=>addRow(r.weight??'',r.volume??''));if(!d.rows.length)addRow();
+ $('calcStatus').textContent='Data berhasil dipulihkan. Tekan Hitung FFA untuk memperbarui hasil.';
+}
+function restoreLocalData(){try{const raw=localStorage.getItem(STORE_KEY);if(raw)applyData(JSON.parse(raw))}catch(e){$('saveStatus').textContent='Data lokal tidak dapat dibaca. Gunakan file backup bila tersedia.'}}
+document.addEventListener('input',e=>{if(e.target.closest('#appContent'))saveData()});
+document.getElementById('backupData').onclick=()=>{
+ const blob=new Blob([JSON.stringify(collectData(),null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='backup-ffa-smart-scanner-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);$('saveStatus').textContent='File backup JSON dibuat. Simpan di tempat aman.';
+};
+document.getElementById('restoreFile').addEventListener('change',async e=>{
+ const f=e.target.files[0];if(!f)return;try{applyData(JSON.parse(await f.text()));saveData();$('saveStatus').textContent='Backup berhasil dipulihkan.'}catch(err){$('saveStatus').textContent='Backup gagal dibaca: '+err.message}e.target.value='';
+});
 const v=document.getElementById("introVideo");v.play().catch(()=>{});
 </script>
 </body></html>
