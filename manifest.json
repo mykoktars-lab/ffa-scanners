@@ -1,0 +1,19 @@
+{
+  "name": "FFA Smart Scanner",
+  "short_name": "FFA Scanner",
+  "description": "Aplikasi bantu pemindaian catatan dan perhitungan FFA.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f5f5",
+  "theme_color": "#991b1b",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

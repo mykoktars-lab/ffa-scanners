@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#991b1b">
+<meta name="description" content="Aplikasi bantu pemindaian catatan dan perhitungan Free Fatty Acid (FFA).">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<title>FFA Smart Scanner</title>
+<style>
+:root{--red:#991b1b;--red2:#b91c1c;--ink:#171717;--muted:#737373;--bg:#f5f5f5;--line:#e5e5e5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+header{background:linear-gradient(135deg,#7f1d1d,#b91c1c);color:white;padding:20px 17px 24px}
+.head{max-width:780px;margin:auto;display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border:1px solid #ffffff70;border-radius:14px;display:grid;place-items:center;font-size:25px}
+h1{font-size:20px;margin:0;letter-spacing:.3px}header p{margin:3px 0 0;color:#fee2e2;font-size:12px}
+main{max-width:780px;margin:17px auto;padding:0 13px 38px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:13px;box-shadow:0 3px 12px #00000008}
+h2{font-size:16px;margin:0 0 10px}.hint{font-size:12px;color:var(--muted);line-height:1.55}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:11px 13px;font-weight:650;font-size:13px;cursor:pointer;background:var(--red);color:white}.btn.secondary{background:#f3f4f6;color:#262626;border:1px solid var(--line)}.btn:disabled{opacity:.45;cursor:not-allowed}
+input,select{font:inherit}input[type=file]{width:100%;font-size:13px;margin:8px 0}
+.preview{width:100%;max-height:330px;object-fit:contain;background:#fafafa;border:1px dashed #ddd;border-radius:10px;margin:10px 0;display:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}.field input{width:100%;border:1px solid #d4d4d4;border-radius:9px;padding:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 5px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:center}th{color:#525252;background:#fafafa}
+td input{width:100%;min-width:72px;border:1px solid #ddd;border-radius:7px;padding:7px;text-align:right;font:inherit}
+.result{font-weight:700;color:#991b1b}.status{font-size:12px;color:var(--muted);margin-top:9px;min-height:18px}
+.formula{background:#fff7f7;border:1px solid #fecaca;border-radius:10px;padding:11px;font-size:13px;line-height:1.6}
+.notice{background:#fffbeb;border:1px solid #fde68a;color:#854d0e;padding:10px;border-radius:10px;font-size:12px;line-height:1.5}
+footer{text-align:center;color:#888;font-size:11px;padding:12px}
+@media(max-width:480px){.card{padding:12px}.btn{flex:1}.grid{gap:8px}}
+</style>
+</head>
+<body>
+<header><div class="head"><div class="logo">🧪</div><div><h1>FFA SMART SCANNER</h1><p>Laboratory calculation assistant</p></div></div></header>
+<main>
+<section class="card">
+<h2>1. Foto catatan dua kolom</h2>
+<p class="hint">Ambil foto atau pilih gambar catatan yang berisi berat sampel dan volume titrasi. Pastikan tulisan fokus, terang, dan tidak miring.</p>
+<input id="photo" type="file" accept="image/*" capture="environment">
+<img id="preview" class="preview" alt="Pratinjau foto catatan">
+<div class="actions"><button class="btn" id="scan">Baca foto dengan OCR</button><button class="btn secondary" id="clearPhoto">Hapus foto</button></div>
+<div class="status" id="ocrStatus">OCR memerlukan koneksi internet untuk memuat mesin pengenal teks.</div>
+</section>
+
+<section class="card">
+<h2>2. Parameter perhitungan</h2>
+<div class="grid">
+<div class="field"><label>Faktor asam oleat</label><input id="factor" type="number" step="any" value="25.6"></div>
+<div class="field"><label>Normalitas NaOH</label><input id="normality" type="number" step="any" value="0.0429"></div>
+</div>
+<p class="hint">Nilai awal mengikuti parameter yang diberikan: faktor 25,6 dan normalitas 0,0429.</p>
+<div class="formula"><b>Rumus FFA (%)</b><br>Volume titrasi × Normalitas × Faktor asam oleat ÷ Berat sampel</div>
+</section>
+
+<section class="card">
+<h2>3. Periksa dan koreksi angka</h2>
+<p class="hint">OCR tulisan tangan dapat keliru. Periksa nomor, berat, dan volume satu per satu. Koreksi angka sebelum menghitung.</p>
+<div style="overflow-x:auto"><table><thead><tr><th>No.</th><th>Berat sampel (g)</th><th>Volume titrasi (mL)</th><th>FFA (%)</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="actions" style="margin-top:12px"><button class="btn secondary" id="addRow">+ Tambah baris</button><button class="btn secondary" id="removeRow">− Hapus baris</button><button class="btn" id="calculate">Hitung FFA</button></div>
+<div class="status" id="calcStatus"></div>
+</section>
+
+<section class="card">
+<h2>4. Ekspor foto hasil</h2>
+<div class="field"><label>Judul laporan</label><input id="reportTitle" value="HASIL ANALISIS FFA"></div>
+<div class="field" style="margin-top:9px"><label>Tanggal analisis</label><input id="reportDate" type="date"></div>
+<div class="actions" style="margin-top:12px"><button class="btn" id="export">Buat foto hasil FFA</button><button class="btn secondary" id="share" disabled>Bagikan foto</button></div>
+<p class="hint">Foto laporan PNG dapat disimpan atau dibagikan melalui aplikasi yang tersedia di HP.</p>
+<canvas id="report" style="display:none"></canvas>
+</section>
+<div class="notice"><b>Catatan verifikasi:</b> Aplikasi ini alat bantu hitung. OCR bukan pembacaan yang dijamin benar. Periksa seluruh angka dan verifikasi hasil sesuai SOP laboratorium sebelum dipakai sebagai data resmi.</div>
+<footer>FFA Smart Scanner • V1.0 • Laboratory Assistant</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);let lastBlob=null;
+function addRow(w='',v=''){const tr=document.createElement('tr');tr.innerHTML=`<td>${$('rows').children.length+1}</td><td><input class="weight" type="number" step="any" placeholder="Berat"></td><td><input class="volume" type="number" step="any" placeholder="Volume"></td><td class="result">—</td>`;tr.querySelector('.weight').value=w;tr.querySelector('.volume').value=v;$('rows').appendChild(tr)}
+function renumber(){[...$('rows').children].forEach((r,i)=>r.children[0].textContent=i+1)}
+for(let i=0;i<5;i++)addRow();
+$('photo').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;$('preview').src=URL.createObjectURL(f);$('preview').style.display='block';$('ocrStatus').textContent='Foto siap dipindai.'});
+$('clearPhoto').onclick=()=>{$('photo').value='';$('preview').removeAttribute('src');$('preview').style.display='none';$('ocrStatus').textContent='Foto dihapus.'};
+$('scan').onclick=async()=>{
+ const f=$('photo').files[0];if(!f){$('ocrStatus').textContent='Pilih atau foto catatan terlebih dahulu.';return}
+ if(!window.Tesseract){$('ocrStatus').textContent='Mesin OCR belum termuat. Periksa koneksi internet dan muat ulang halaman.';return}
+ $('scan').disabled=true;$('ocrStatus').textContent='Sedang membaca foto…';
+ try{
+  const worker=await Tesseract.createWorker('eng');await worker.setParameters({tessedit_char_whitelist:'0123456789.,'});
+  const {data}=await worker.recognize(f);await worker.terminate();
+  const tokens=(data.text.match(/\d+[.,]\d+|\d+/g)||[]).map(x=>x.replace(',','.'));
+  const nums=tokens.map(Number).filter(n=>Number.isFinite(n));
+  if(nums.length<2)throw new Error('Angka belum terbaca dengan cukup jelas.');
+  $('rows').innerHTML='';for(let i=0;i+1<nums.length;i+=2)addRow(nums[i],nums[i+1]);if(nums.length%2)addRow(nums[nums.length-1],'');
+  $('ocrStatus').textContent=`Terbaca ${nums.length} angka. Angka dipasangkan sesuai urutan OCR, bukan pemahaman kolom. Cocokkan setiap pasangan dengan foto dan koreksi bila perlu.`;
+ }catch(e){$('ocrStatus').textContent='Belum berhasil membaca: '+e.message+' Coba foto lebih dekat/terang atau masukkan angka manual.'}
+ finally{$('scan').disabled=false}
+};
+$('addRow').onclick=()=>addRow();$('removeRow').onclick=()=>{if($('rows').children.length>1){$('rows').lastElementChild.remove();renumber()}};
+$('calculate').onclick=()=>{
+ const f=Number($('factor').value),n=Number($('normality').value);let valid=0;
+ [...$('rows').children].forEach(r=>{const w=Number(r.querySelector('.weight').value),v=Number(r.querySelector('.volume').value),cell=r.querySelector('.result');
+ if(w>0&&v>=0&&f>0&&n>0){cell.textContent=(v*n*f/w).toFixed(3);valid++}else cell.textContent='—'});
+ $('calcStatus').textContent=`${valid} baris berhasil dihitung. Baris kosong/tidak valid dilewati.`;
+};
+async function makeReport(){
+ $('calculate').click();const rows=[...$('rows').children].filter(r=>r.querySelector('.result').textContent!=='—');
+ if(!rows.length){$('calcStatus').textContent='Isi berat dan volume yang valid terlebih dahulu.';return null}
+ const c=$('report'),ctx=c.getContext('2d'),W=1000,top=260,rowH=58;c.width=W;c.height=top+rows.length*rowH+100;
+ ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#991b1b';ctx.fillRect(0,0,W,150);
+ ctx.fillStyle='#fff';ctx.font='bold 34px Arial';ctx.fillText($('reportTitle').value||'HASIL ANALISIS FFA',55,70);ctx.font='22px Arial';ctx.fillText('FFA SMART SCANNER',55,112);
+ ctx.fillStyle='#222';ctx.font='20px Arial';ctx.fillText('Tanggal: '+($('reportDate').value||new Date().toISOString().slice(0,10)),55,195);
+ ctx.font='18px Arial';ctx.fillText(`Faktor: ${$('factor').value}     Normalitas NaOH: ${$('normality').value}`,55,230);
+ const xs=[70,250,500,750],headers=['No.','Berat (g)','Volume (mL)','FFA (%)'];ctx.fillStyle='#f3f4f6';ctx.fillRect(45,top-10,910,55);ctx.fillStyle='#333';ctx.font='bold 20px Arial';headers.forEach((h,i)=>ctx.fillText(h,xs[i],top+25));
+ rows.forEach((r,i)=>{let y=top+55+i*rowH;if(i%2===0){ctx.fillStyle='#fafafa';ctx.fillRect(45,y-35,910,rowH)}ctx.fillStyle='#222';ctx.font='20px Arial';[i+1,r.querySelector('.weight').value,r.querySelector('.volume').value,r.querySelector('.result').textContent].forEach((v,j)=>ctx.fillText(String(v),xs[j],y));ctx.strokeStyle='#e5e5e5';ctx.beginPath();ctx.moveTo(45,y+12);ctx.lineTo(955,y+12);ctx.stroke()});
+ ctx.fillStyle='#777';ctx.font='15px Arial';ctx.fillText('Periksa dan verifikasi data sesuai SOP laboratorium.',55,c.height-35);
+ return new Promise(resolve=>c.toBlob(resolve,'image/png'));
+}
+$('export').onclick=async()=>{lastBlob=await makeReport();if(!lastBlob)return;$('share').disabled=false;const a=document.createElement('a');a.href=URL.createObjectURL(lastBlob);a.download='hasil-analisis-FFA.png';a.click()};
+$('share').onclick=async()=>{if(!lastBlob)return;const file=new File([lastBlob],'hasil-analisis-FFA.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Hasil Analisis FFA'})}else{const a=document.createElement('a');a.href=URL.createObjectURL(lastBlob);a.download='hasil-analisis-FFA.png';a.click();alert('Foto diunduh. Kamu bisa mengirimkannya melalui WhatsApp.')}};
+$('reportDate').value=new Date().toISOString().slice(0,10);
+if('serviceWorker'in navigator&&location.protocol!=='file:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(e=>console.log('SW:',e)))}
+</script>
+</body></html>
