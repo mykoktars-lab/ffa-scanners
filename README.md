@@ -1,24 +1,24 @@
-# Calculator Smart Scanner V5
+# Calculator Smart Scanner V6
 
 Aplikasi web/PWA statis untuk perhitungan laboratorium.
 
 ## Modul aktif
-- FFA: Volume × Normalitas NaOH × Faktor FFA ÷ Berat sampel.
-- Kadar Air: (Berat botol kosong + berat sampel − berat akhir) ÷ berat sampel × 100%.
+- FFA: 25,6 × Normalitas KOH × volume titrasi ÷ berat sampel.
+- Kadar Air: (berat botol kosong + berat sampel − berat akhir) ÷ berat sampel × 100%.
 - AV: 56,1 × Normalitas KOH × volume titrasi ÷ (berat labu akhir − berat labu kosong).
-- FC: (Berat akhir − berat awal) ÷ berat sampel × 100%.
-- Kadar Abu: (Berat akhir − berat awal) ÷ berat sampel × 100%.
+- Kadar Abu: (berat akhir − berat awal) ÷ berat sampel × 100%.
+- FC: (berat akhir − berat awal) ÷ berat sampel × 100%.
 
 POV ditampilkan sebagai fitur dalam pengembangan.
 
 ## Fitur
-Riwayat terpisah per kalkulator, penyimpanan otomatis di browser, pengaturan normalitas dan presisi desimal, baris dinamis, baris kosong/tidak lengkap dilewati, backup dan pemulihan JSON. FFA memiliki OCR bantuan dan ekspor foto sederhana.
+Tampilan minimalis tanpa OCR/foto, pengaturan normalitas KOH bersama untuk FFA dan AV, faktor FFA 25,6 dan konstanta AV 56,1 ditetapkan di rumus, presisi desimal dapat diatur, input tersimpan otomatis pada perangkat, tombol Kosongkan Data tanpa riwayat, baris dinamis, serta baris kosong/tidak lengkap dilewati.
 
 ## Deploy GitHub Pages
-1. Unggah isi ZIP ke branch `main`.
+1. Ekstrak ZIP dan unggah seluruh isi folder ke branch `main`.
 2. Pastikan workflow `.github/workflows/deploy.yml` ikut terunggah.
-3. Settings > Pages > Source: GitHub Actions.
+3. Buka Settings > Pages dan pilih Source: GitHub Actions.
 4. Tunggu workflow selesai.
 
 ## Catatan
-Penyimpanan otomatis berada di browser/perangkat yang digunakan, bukan cloud. Unduh backup secara berkala. OCR dapat keliru, terutama untuk tulisan tangan; verifikasi angka sebelum dipakai. Hasil kalkulasi perlu diverifikasi dengan metode dan SOP laboratorium.
+Penyimpanan otomatis berada di browser/perangkat yang digunakan, bukan cloud. Hasil kalkulasi tetap perlu diverifikasi dengan metode dan SOP laboratorium.

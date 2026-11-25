@@ -6,31 +6,29 @@
 <link rel="manifest" href="manifest.json"><link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <title>Calculator Smart Scanner</title>
 <style>
-:root{--navy:#17212b;--navy2:#263746;--gold:#c5a46d;--ink:#1d2935;--muted:#718096;--bg:#eef1f4;--line:#dce2e8;--red:#8b2635}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
-header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:white;padding:18px 16px 20px;border-bottom:3px solid var(--gold)}
+:root{--navy:#171717;--navy2:#343434;--gold:#c5a46d;--ink:#202124;--muted:#718096;--bg:#fff;--line:#e2e4e7;--red:#a71924}
+*{box-sizing:border-box}body{margin:0;background-color:#fff;background-image:radial-gradient(#dfe2e6 0.65px,transparent 0.65px);background-size:15px 15px;color:var(--ink);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:linear-gradient(120deg,#a71924 0%,#5c1018 48%,#171717 100%);color:white;padding:18px 16px 20px;border-bottom:3px solid #292929}
 .head,main{max-width:820px;margin:auto}.head{display:flex;align-items:center;gap:12px}.logo,.loginMark{display:grid;place-items:center;background:linear-gradient(145deg,#b78e5a,#e1c99d);color:var(--navy);border-radius:14px;width:48px;height:48px;font-size:25px}
 h1{font-size:19px;margin:0;letter-spacing:.3px}header p{margin:3px 0 0;color:#d5dee5;font-size:12px}
 main{padding:16px 13px 40px}.card{background:white;border:1px solid var(--line);border-radius:17px;padding:15px;margin-bottom:13px;box-shadow:0 10px 28px #2537460c}
 h2{font-size:16px;margin:0 0 10px}.hint{font-size:12px;color:var(--muted);line-height:1.55}.muted{color:var(--muted)}
-.btn{border:0;border-radius:10px;padding:11px 13px;font-weight:700;font-size:13px;cursor:pointer;background:linear-gradient(135deg,#8b2635,#a33b49);color:white}
+.btn{border:0;border-radius:10px;padding:11px 13px;font-weight:700;font-size:13px;cursor:pointer;background:linear-gradient(120deg,#a71924,#171717);color:white}
 .btn.secondary{background:#f7f8fa;color:#263746;border:1px solid var(--line);box-shadow:none}.btn.gold{background:linear-gradient(135deg,#b78e5a,#e1c99d);color:#17212b}.btn:disabled{opacity:.45}
 .actions{display:flex;gap:8px;flex-wrap:wrap}.actions .btn{flex:1}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px}.field input,.field select{width:100%;border:1px solid #d4dce3;border-radius:9px;padding:10px;font:inherit;background:white}
 .menuGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.menuTile{border:1px solid var(--line);border-radius:15px;background:#fff;padding:17px 13px;text-align:left;min-height:105px;cursor:pointer;box-shadow:0 5px 16px #2537460a}.menuTile b{display:block;font-size:16px;color:var(--navy)}.menuTile span{font-size:11px;color:var(--muted)}.menuTile em{font-style:normal;font-size:23px;display:block;margin-bottom:6px}
 .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.toolbar .btn{flex:1}
-table{width:100%;border-collapse:collapse;font-size:12px;min-width:560px}th,td{padding:7px 5px;border-bottom:1px solid var(--line);text-align:center}th{background:#f7f8fa;color:#526170}td input{width:100%;min-width:78px;border:1px solid #dce2e8;border-radius:7px;padding:8px 5px;text-align:right;font:inherit}
-.result{font-weight:750;color:#8b2635}.status{font-size:12px;color:var(--muted);margin-top:9px;min-height:18px}.formula{background:#f8f3eb;border:1px solid #e5d5b9;border-radius:10px;padding:11px;font-size:13px;line-height:1.6}
+table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:11px}th,td{padding:6px 2px;border-bottom:1px solid var(--line);text-align:center;overflow-wrap:anywhere}th{background:#f7f7f8;color:#526170;font-size:10px;line-height:1.2}th:first-child,td:first-child{width:25px}th:last-child,td:last-child{width:58px}td input{display:block;width:100%;min-width:0;max-width:100%;border:1px solid #dce2e8;border-radius:6px;padding:8px 2px;text-align:center;font:inherit;font-size:11px}
+.result{font-weight:750;color:#a71924;font-size:10px;overflow-wrap:anywhere}.status{font-size:12px;color:var(--muted);margin-top:9px;min-height:18px}.formula{background:#f8f3eb;border:1px solid #e5d5b9;border-radius:10px;padding:11px;font-size:13px;line-height:1.6}
 .notice{background:#fffbeb;border:1px solid #fde68a;color:#854d0e;padding:10px;border-radius:10px;font-size:12px;line-height:1.5}
 #introScreen,#loginScreen{position:fixed;inset:0;z-index:1000;background:#111b24;color:white;display:flex;align-items:center;justify-content:center;padding:22px}
 #introScreen video{position:absolute;width:100%;height:100%;object-fit:cover;inset:0;opacity:.82}.introShade{position:absolute;inset:0;background:linear-gradient(180deg,#10182055,#101820aa)}
 .introSkip{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:2;background:linear-gradient(135deg,#c5a46d,#f1dfb8);color:#17212b;border:1px solid #fff8;border-radius:999px;padding:12px 34px;font-weight:800;letter-spacing:3px;box-shadow:0 0 24px #c5a46d88;cursor:pointer}
 #loginScreen{display:none;background:radial-gradient(circle at 50% 25%,#344653,#17212b 58%,#101820)}.loginPanel{width:min(520px,100%);text-align:center;border:1px solid #ffffff2c;background:#ffffff0d;backdrop-filter:blur(14px);border-radius:24px;padding:25px 20px;max-height:92vh;overflow:auto}
 .loginMark{width:68px;height:68px;margin:0 auto 14px;font-size:30px}.loginPanel h1{font-size:23px;letter-spacing:1px}.loginPanel p{color:#c7d0d8;font-size:12px;line-height:1.6}.premiumTag{color:#e3c99b;font-size:10px;letter-spacing:2px;margin-bottom:8px}
-#appContent{display:none}.hidden{display:none!important}.backBtn{margin-bottom:12px}.historyItem{padding:11px;border:1px solid var(--line);border-radius:10px;margin:8px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}.historyItem small{display:block;color:var(--muted);font-size:11px}
-.preview{width:100%;max-height:300px;object-fit:contain;border:1px dashed var(--line);border-radius:10px;margin:10px 0;display:none}.fileChoice{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0}.fileChoice .btn{display:flex;justify-content:center;align-items:center}.fileChoice input{display:none}
-footer{text-align:center;color:#89939d;font-size:11px;padding:10px}
-@media(max-width:480px){.card{padding:12px}.menuGrid{gap:8px}.menuTile{padding:13px 10px;min-height:100px}.btn{font-size:12px}.grid{gap:8px}}
+#appContent{display:none}.hidden{display:none!important}.backBtn{margin-bottom:12px}footer{text-align:center;color:#89939d;font-size:11px;padding:10px}
+@media(max-width:480px){.card{padding:11px}.menuGrid{gap:8px}.menuTile{padding:13px 10px;min-height:100px}.btn{font-size:12px}.grid{gap:8px}main{padding:12px 8px 30px}.toolbar{gap:5px}th,td{padding:5px 1px}td input{padding:8px 1px;font-size:10px}}
 </style></head>
 <body>
 <section id="introScreen"><video id="introVideo" autoplay muted playsinline preload="auto"><source src="assets/intro.mp4" type="video/mp4"></video><div class="introShade"></div><button class="introSkip" id="skipIntro">LEWATI</button></section>
@@ -38,21 +36,17 @@ footer{text-align:center;color:#89939d;font-size:11px;padding:10px}
 <div id="appContent">
 <header><div class="head"><div class="logo">🧪</div><div><h1>CALCULATOR SMART SCANNER</h1><p>Laboratory calculation assistant</p></div></div></header>
 <main>
-<section class="card" id="moduleCard"><button class="btn secondary backBtn" id="backHome">← Beranda</button><div id="moduleContent"></div></section>
 <section class="card"><h2>Pengaturan</h2><div class="grid">
-<div class="field"><label>Faktor FFA</label><input id="factor" type="text" inputmode="decimal" value="25.6"></div>
-<div class="field"><label>Normalitas NaOH</label><input id="naoh" type="text" inputmode="decimal" value="0.0429"></div>
-<div class="field"><label>Normalitas KOH</label><input id="koh" type="text" inputmode="decimal" value="0.0429"></div>
+<div class="field"><label>Normalitas KOH (FFA & AV)</label><input id="koh" type="text" inputmode="decimal" value="0.0429"></div>
 <div class="field"><label>Angka di belakang koma</label><select id="precision"><option value="1">1 angka</option><option value="2">2 angka</option><option value="3" selected>3 angka</option><option value="4">4 angka</option><option value="5">5 angka</option><option value="6">6 angka</option></select></div>
-</div><p class="hint">Pengaturan tersimpan otomatis dan digunakan oleh kalkulator terkait.</p><div class="status" id="saveStatus">Penyimpanan lokal siap.</div></section>
-<section class="card"><h2>Riwayat & Backup</h2><p class="hint">Riwayat perhitungan disimpan terpisah untuk setiap kalkulator. Backup dapat dipindahkan ke perangkat lain.</p><div class="actions"><button class="btn secondary" id="backupData">Unduh backup</button><label class="btn secondary" for="restoreFile" style="text-align:center">Pulihkan backup<input id="restoreFile" type="file" accept="application/json,.json" hidden></label></div><div id="historyArea" style="margin-top:12px"></div></section>
+</div><p class="hint">Pengaturan tersimpan otomatis dan digunakan oleh FFA serta AV.</p><div class="status" id="saveStatus">Pengaturan lokal siap.</div></section>
+<section class="card" id="moduleCard"><button class="btn secondary backBtn" id="backHome">← Beranda</button><div id="moduleContent"></div></section>
 </main><footer>Calculator Smart Scanner • Alat bantu perhitungan, verifikasi sesuai SOP laboratorium.</footer></div>
 <canvas id="report" class="hidden"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const MODULES={
- FFA:{title:"Kalkulator FFA",sub:"Free Fatty Acid",icon:"🧪",heads:["Berat sampel (g)","Volume titrasi (mL)"],formula:"FFA (%) = Volume × Normalitas NaOH × Faktor FFA ÷ Berat sampel",fields:["Berat","Volume"]},
+ FFA:{title:"Kalkulator FFA",sub:"Free Fatty Acid",icon:"🧪",heads:["Berat sampel (g)","Volume titrasi (mL)"],formula:"FFA (%) = 25,6 × Normalitas KOH × Volume titrasi ÷ Berat sampel",fields:["Berat","Volume"]},
  WATER:{title:"Kalkulator Kadar Air",sub:"Moisture Content",icon:"💧",heads:["Berat botol kosong (g)","Berat sampel (g)","Berat akhir (g)"],formula:"KA (%) = (Berat botol kosong + Berat sampel − Berat akhir) ÷ Berat sampel × 100%",fields:["Botol kosong","Berat sampel","Berat akhir"]},
  ASH:{title:"Kalkulator Kadar Abu",sub:"Ash Content",icon:"⚗️",heads:["Berat awal (g)","Berat akhir (g)","Berat sampel (g)"],formula:"Kadar abu (%) = (Berat akhir − Berat awal) ÷ Berat sampel × 100%",fields:["Berat awal","Berat akhir","Berat sampel"]},
  AV:{title:"Kalkulator AV",sub:"Acid Value",icon:"🧫",heads:["Berat labu kosong (g)","Berat labu akhir (g)","Volume titrasi KOH (mL)"],formula:"Berat sampel = Berat akhir − Berat kosong; AV = 56,1 × Normalitas KOH × Volume ÷ Berat sampel",fields:["Labu kosong","Labu akhir","Volume KOH"]},
@@ -65,17 +59,17 @@ const fmt=v=>Number.isFinite(v)?v.toFixed(Number($('precision').value||3)):"—"
 function blankRow(){return {values:Array(MODULES[current].fields.length).fill("")}}
 function getRows(){return [...document.querySelectorAll("#dataRows tr")].map(tr=>[...tr.querySelectorAll("input")].map(x=>x.value))}
 function buildHome(){ $('homeMenu').innerHTML="";Object.entries(MODULES).forEach(([key,m])=>{const b=document.createElement("button");b.className="menuTile";b.innerHTML=`<em>${m.icon}</em><b>${m.title.replace("Kalkulator ","")}</b><span>${m.sub}${m.soon?" • Segera hadir":""}</span>`;b.onclick=()=>openModule(key);$('homeMenu').appendChild(b)})}
-function openModule(key){current=key; $('loginScreen').style.display="none";$('appContent').style.display="block";renderModule();renderHistory()}
+function openModule(key){current=key; $('loginScreen').style.display="none";$('appContent').style.display="block";renderModule()}
 function backHome(){$('appContent').style.display="none";$('loginScreen').style.display="flex";$('moduleContent').innerHTML=""}
 function renderModule(){
  const m=MODULES[current],root=$('moduleContent');
  if(m.soon){root.innerHTML=`<h2>${m.title}</h2><p class="hint">${m.sub}</p><div class="notice">Fitur ${m.title} sedang dalam pengembangan. Nantikan pembaruan berikutnya.</div>`;return}
- const settings=current==="FFA"?`<p class="hint">Faktor: <b id="factorInfo"></b> • Normalitas NaOH: <b id="naohInfo"></b></p>`:current==="AV"?`<p class="hint">Normalitas KOH: <b id="kohInfo"></b> • Berat sampel dihitung otomatis dari selisih berat labu.</p>`:"";
+ const settings=current==="AV"?`<p class="hint">Normalitas KOH diatur pada bagian Pengaturan di atas. Berat sampel dihitung otomatis dari selisih berat labu.</p>`:current==="FFA"?`<p class="hint">Faktor tetap 25,6. Normalitas menggunakan KOH dari Pengaturan.</p>`:"";
  root.innerHTML=`<h2>${m.title}</h2><p class="hint">${m.sub} • Baris kosong atau belum lengkap akan dilewati saat menghitung.</p><div class="formula">${m.formula}</div>${settings}
- ${current==="FFA"?`<div style="margin-top:14px"><h2>Foto catatan dua kolom (opsional)</h2><p class="hint">Kolom berat di kiri dan volume titrasi di kanan. OCR membantu memasukkan angka, tetapi wajib diperiksa kembali.</p><div class="fileChoice"><label class="btn secondary" for="galleryPhoto">▣ Pilih galeri<input id="galleryPhoto" type="file" accept="image/*"></label><label class="btn secondary" for="cameraPhoto">◎ Buka kamera<input id="cameraPhoto" type="file" accept="image/*" capture="environment"></label></div><input id="photo" type="file" accept="image/*" hidden><img id="preview" class="preview"><div class="actions"><button class="btn" id="scan">Baca foto OCR</button><button class="btn secondary" id="clearPhoto">Hapus foto</button></div><div class="status" id="ocrStatus"></div></div>`:""}
- <div style="overflow-x:auto;margin-top:14px"><table><thead><tr><th>No.</th>${m.heads.map(h=>`<th>${h}</th>`).join("")}<th>Hasil</th></tr></thead><tbody id="dataRows"></tbody></table></div>
+ 
+ <div style="margin-top:14px"><table><thead><tr><th>No.</th>${m.heads.map(h=>`<th>${h}</th>`).join("")}<th>Hasil</th></tr></thead><tbody id="dataRows"></tbody></table></div>
  <div class="actions" style="margin-top:12px"><button class="btn secondary" id="addRow">+ Tambah baris</button><button class="btn secondary" id="removeRow">− Hapus baris</button><button class="btn" id="calculate">Hitung</button></div>
- <div class="actions" style="margin-top:8px"><button class="btn gold" id="clearGroup">Simpan & kosongkan data</button><button class="btn secondary" id="exportResult">Buat foto hasil</button></div><div class="status" id="calcStatus"></div>`;
+ <div class="actions" style="margin-top:8px"><button class="btn gold" id="clearGroup">Kosongkan Data</button><button class="btn secondary" id="exportResult">Buat foto hasil</button></div><div class="status" id="calcStatus"></div>`;
  const rows=loadCurrentRows();(rows.length?rows:[blankRow(),blankRow(),blankRow()]).forEach(r=>addDataRow(r));
  updateSettingInfo();attachModuleEvents();calculate(false);
 }
@@ -83,13 +77,13 @@ function addDataRow(values=[]){const m=MODULES[current],tr=document.createElemen
 function renumber(){document.querySelectorAll("#dataRows .rowNo").forEach((x,i)=>x.textContent=i+1)}
 function loadCurrentRows(){try{return JSON.parse(localStorage.getItem("css.current."+current)||"[]")}catch{return []}}
 function persistCurrent(){try{localStorage.setItem("css.current."+current,JSON.stringify(getRows()))}catch{}}
-function updateSettingInfo(){if(current==="FFA"){$('factorInfo').textContent=$('factor').value;$('naohInfo').textContent=$('naoh').value}if(current==="AV")$('kohInfo').textContent=$('koh').value}
+function updateSettingInfo(){}
 function calculate(show=true){
  const rows=getRows();let count=0;
  rows.forEach((a,i)=>{let result=NaN;
  const x=a.map(parse);
  if(a.every(v=>String(v).trim()==="")){result=NaN}
- else if(current==="FFA"&&x[0]>0&&x[1]>=0&&parse($('factor').value)>0&&parse($('naoh').value)>0)result=x[1]*parse($('naoh').value)*parse($('factor').value)/x[0];
+ else if(current==="FFA"&&x[0]>0&&x[1]>=0&&parse($('koh').value)>0)result=25.6*parse($('koh').value)*x[1]/x[0];
  else if(current==="WATER"&&x[0]>=0&&x[1]>0&&x[2]>=0)result=((x[0]+x[1]-x[2])/x[1])*100;
  else if(current==="AV"&&x[0]>=0&&x[1]>x[0]&&x[2]>=0&&parse($('koh').value)>0)result=56.1*parse($('koh').value)*x[2]/(x[1]-x[0]);
  else if((current==="ASH"||current==="FC")&&x[0]>=0&&x[1]>=0&&x[2]>0)result=((x[1]-x[0])/x[2])*100;
@@ -102,10 +96,10 @@ function attachModuleEvents(){
  $('addRow').onclick=()=>{addDataRow();persistCurrent()};
  $('removeRow').onclick=()=>{if($('dataRows').children.length>1){$('dataRows').lastElementChild.remove();renumber();calculate();persistCurrent()}};
  $('calculate').onclick=()=>calculate(true);
- $('clearGroup').onclick=()=>{const rows=getRows();if(rows.some(r=>r.some(v=>String(v).trim()!==""))){const group={id:Date.now(),module:current,createdAt:new Date().toISOString(),rows,precision:$('precision').value};const hist=getHistory(current);hist.unshift(group);saveHistory(current,hist)}$('dataRows').innerHTML="";for(let i=0;i<3;i++)addDataRow();$('calcStatus').textContent="Kelompok sebelumnya tersimpan otomatis. Tabel baru siap digunakan.";persistCurrent();renderHistory()};
+ $('clearGroup').onclick=()=>{$('dataRows').innerHTML="";for(let i=0;i<3;i++)addDataRow();localStorage.removeItem("css.current."+current);$('calcStatus').textContent="Data berhasil dikosongkan. Siap untuk perhitungan baru."};
  $('exportResult').onclick=()=>exportSimple();
  document.querySelectorAll("#dataRows input").forEach(inp=>inp.addEventListener("input",()=>{calculate(false);persistCurrent()}));
- if(current==="FFA")attachOCR();
+
 }
 function exportSimple(){
  calculate(false);const rows=getRows().map((a,i)=>({a,i,res:document.querySelectorAll("#dataRows tr")[i].querySelector(".result").textContent})).filter(o=>o.res!=="—");
@@ -115,28 +109,12 @@ function exportSimple(){
  rows.forEach((o,i)=>{const y=top+i*rowH;ctx.strokeStyle="#e5e7eb";ctx.beginPath();ctx.moveTo(pad,y+rowH);ctx.lineTo(W-pad,y+rowH);ctx.stroke();ctx.fillStyle="#64748b";ctx.font="18px Arial";ctx.fillText("SAMPEL "+(o.i+1),pad,y+28);ctx.fillStyle="#17212b";ctx.font="21px Arial";ctx.fillText("Berat sampel: "+o.a[0]+" g",pad,y+58);ctx.fillText("Volume: "+o.a[1]+" mL",pad+350,y+58);ctx.fillStyle="#8b2635";ctx.font="bold 23px Arial";ctx.fillText("FFA: "+o.res+"%",pad+690,y+58)});
  c.toBlob(blob=>{if(!blob)return;lastBlob=blob;const a=document.createElement("a"),url=URL.createObjectURL(blob);a.href=url;a.download="hasil-ffa.png";a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)}, "image/png");
 }
-function getHistory(key){try{return JSON.parse(localStorage.getItem("css.history."+key)||"[]")}catch{return []}}
-function saveHistory(key,h){localStorage.setItem("css.history."+key,JSON.stringify(h))}
-function renderHistory(){const area=$('historyArea');if(!area)return;area.innerHTML="";Object.entries(MODULES).filter(([k,m])=>!m.soon).forEach(([key,m])=>{const h=getHistory(key);const sec=document.createElement("div");sec.innerHTML=`<h3 style="font-size:13px;margin:12px 0 5px">${m.title} <span class="muted">(${h.length})</span></h3>`;h.slice(0,8).forEach(g=>{const d=document.createElement("div");d.className="historyItem";const dt=new Date(g.createdAt).toLocaleString("id-ID");d.innerHTML=`<div><b>${dt}</b><small>${g.rows.length} baris tersimpan</small></div><button class="btn secondary">Buka</button>`;d.querySelector("button").onclick=()=>openHistory(key,g.id);sec.appendChild(d)});if(!h.length){const p=document.createElement("p");p.className="hint";p.textContent="Belum ada riwayat.";sec.appendChild(p)}area.appendChild(sec)})}
-function openHistory(key,id){const g=getHistory(key).find(x=>x.id===id);if(!g)return;openModule(key);$('dataRows').innerHTML="";g.rows.forEach(r=>addDataRow(r));calculate(false);$('calcStatus').textContent="Riwayat dibuka. Data aktif dapat diedit; kelompok asli tetap tersimpan di riwayat.";window.scrollTo({top:0,behavior:"smooth"})}
-function attachOCR(){
- const usePhoto=f=>{if(!f)return;const dt=new DataTransfer();dt.items.add(f);$('photo').files=dt.files;$('preview').src=URL.createObjectURL(f);$('preview').style.display="block";$('ocrStatus').textContent="Foto siap dipindai."};
- $('galleryPhoto').onchange=e=>usePhoto(e.target.files[0]);$('cameraPhoto').onchange=e=>usePhoto(e.target.files[0]);
- $('clearPhoto').onclick=()=>{$('photo').value="";$('galleryPhoto').value="";$('cameraPhoto').value="";$('preview').style.display="none";$('ocrStatus').textContent="Foto dihapus."};
- $('scan').onclick=async()=>{const f=$('photo').files[0];if(!f){$('ocrStatus').textContent="Pilih foto terlebih dahulu.";return}if(!window.Tesseract){$('ocrStatus').textContent="OCR belum termuat. Periksa koneksi internet.";return}
- $('scan').disabled=true;$('ocrStatus').textContent="Membaca catatan…";let worker;
- try{const img=await createImageBitmap(f),scale=Math.min(2.5,2400/img.width),c=document.createElement("canvas");c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);const cx=c.getContext("2d");cx.drawImage(img,0,0,c.width,c.height);const mid=Math.floor(c.width/2),left=document.createElement("canvas"),right=document.createElement("canvas");left.width=mid;left.height=c.height;right.width=c.width-mid;right.height=c.height;left.getContext("2d").drawImage(c,0,0,mid,c.height,0,0,mid,c.height);right.getContext("2d").drawImage(c,mid,0,right.width,c.height,0,0,right.width,c.height);
- worker=await Tesseract.createWorker("eng");await worker.setParameters({tessedit_char_whitelist:"0123456789.,",preserve_interword_spaces:"1"});const l=(await worker.recognize(left)).data.text||"",r=(await worker.recognize(right)).data.text||"";
- const nums=t=>((t.replace(/[oO]/g,"0").replace(/[lI|]/g,"1").match(/\d{1,3}(?:[.,]\d{1,4})?/g)||[]).map(s=>parse(s)).filter(n=>n>0));let ws=nums(l),vs=nums(r);ws=ws.filter(n=>n>=10&&n<=20).length?ws.filter(n=>n>=10&&n<=20):ws;vs=vs.filter(n=>n>=.5&&n<=2.9).length?vs.filter(n=>n>=.5&&n<=2.9):vs;const n=Math.max(ws.length,vs.length);if(!n)throw Error("Angka tidak dikenali");$('dataRows').innerHTML="";for(let i=0;i<n;i++)addDataRow([ws[i]??"",vs[i]??""]);calculate(false);persistCurrent();$('ocrStatus').textContent="OCR selesai. Periksa urutan dan koma desimal sebelum menggunakan hasil."}
- catch(e){$('ocrStatus').textContent="OCR gagal: "+e.message}finally{if(worker)await worker.terminate();$('scan').disabled=false}}
-}
-function saveSettings(){localStorage.setItem("css.settings",JSON.stringify({factor:$('factor').value,naoh:$('naoh').value,koh:$('koh').value,precision:$('precision').value}));updateSettingInfo();if($('dataRows'))calculate(false)}
-function loadSettings(){try{const s=JSON.parse(localStorage.getItem("css.settings")||"{}");$('factor').value=s.factor??"25.6";$('naoh').value=s.naoh??"0.0429";$('koh').value=s.koh??"0.0429";$('precision').value=s.precision??"3"}catch{}}
-["factor","naoh","koh","precision"].forEach(id=>$(id).addEventListener("input",saveSettings));
-$('backHome').onclick=backHome;$('backupData').onclick=()=>{const obj={app:"Calculator Smart Scanner",version:5,settings:JSON.parse(localStorage.getItem("css.settings")||"{}"),current:{},history:{}};Object.keys(MODULES).forEach(k=>{obj.current[k]=localStorage.getItem("css.current."+k)||"[]";obj.history[k]=localStorage.getItem("css.history."+k)||"[]"});const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="backup-calculator-smart-scanner.json";a.click();setTimeout(()=>URL.revokeObjectURL(url),1500)};
-$('restoreFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!d||d.app!=="Calculator Smart Scanner"||d.version!==5)throw Error("Format backup tidak cocok");localStorage.setItem("css.settings",JSON.stringify(d.settings||{}));Object.keys(MODULES).forEach(k=>{localStorage.setItem("css.current."+k,d.current?.[k]||"[]");localStorage.setItem("css.history."+k,d.history?.[k]||"[]")});loadSettings();renderHistory();if(current)renderModule();$('saveStatus').textContent="Backup berhasil dipulihkan."}catch(err){$('saveStatus').textContent="Gagal memulihkan backup: "+err.message}e.target.value=""};
+function saveSettings(){localStorage.setItem("css.settings",JSON.stringify({koh:$('koh').value,precision:$('precision').value}));if($('dataRows'))calculate(false);$('saveStatus').textContent="Pengaturan tersimpan otomatis."}
+function loadSettings(){try{const s=JSON.parse(localStorage.getItem("css.settings")||"{}");$('koh').value=s.koh??s.naoh??"0.0429";$('precision').value=s.precision??"3"}catch{}}
+["koh","precision"].forEach(id=>$(id).addEventListener("input",saveSettings));
+$('backHome').onclick=backHome;
 function enterApp(){ $('introScreen').style.display="none";$('loginScreen').style.display="flex";$('introVideo').pause()}
 $('skipIntro').onclick=enterApp;$('introVideo').addEventListener("ended",enterApp);$('introVideo').play().catch(()=>{});
-loadSettings();buildHome();renderHistory();
+loadSettings();buildHome();
 if("serviceWorker"in navigator&&location.protocol!=="file:")window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 </script></body></html>
