@@ -1,7 +1,7 @@
 {
-  "name": "FFA Smart Scanner",
-  "short_name": "FFA Scanner",
-  "description": "Aplikasi bantu pemindaian catatan dan perhitungan FFA.",
+  "name": "Calculator Smart Scanner",
+  "short_name": "Smart Scanner",
+  "description": "Kalkulator analisis laboratorium: FFA, kadar air, kadar abu, AV, FC dan modul mendatang.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

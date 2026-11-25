@@ -1,20 +1,24 @@
-# FFA Smart Scanner V4
+# Calculator Smart Scanner V5
 
-- Intro video dari pengguna (10 detik), tombol LEWATI di tengah bawah.
-- Masuk sebagai tamu tanpa akun.
-- Data parameter dan tabel disimpan otomatis di localStorage browser; tersedia ekspor dan pemulihan backup JSON.
-- Input foto dari galeri atau kamera.
-- OCR memproses dua bagian foto secara terpisah, meningkatkan kontras, dan menggunakan rentang umum berat 10–20 g serta volume 0,5–2,9 mL sebagai petunjuk penyaringan.
-- Hasil OCR tetap harus diverifikasi manual. OCR berbasis Tesseract.js tidak menjamin pembacaan tulisan tangan atau koma desimal secara benar.
-- Foto hasil PNG memakai tata letak laporan yang lebih rapi.
+Aplikasi web/PWA statis untuk perhitungan laboratorium.
 
-## Rumus
-FFA (%) = Volume titrasi (mL) × Normalitas NaOH × Faktor asam oleat ÷ Berat sampel (g)
+## Modul aktif
+- FFA: Volume × Normalitas NaOH × Faktor FFA ÷ Berat sampel.
+- Kadar Air: (Berat botol kosong + berat sampel − berat akhir) ÷ berat sampel × 100%.
+- AV: 56,1 × Normalitas KOH × volume titrasi ÷ (berat labu akhir − berat labu kosong).
+- FC: (Berat akhir − berat awal) ÷ berat sampel × 100%.
+- Kadar Abu: (Berat akhir − berat awal) ÷ berat sampel × 100%.
 
-Nilai awal: faktor 25.6; normalitas NaOH 0.0429.
+POV ditampilkan sebagai fitur dalam pengembangan.
 
-## Penyimpanan
-Data otomatis disimpan pada browser/perangkat yang sedang digunakan. Ini bukan sinkronisasi cloud dan bukan akun aman; hapus data browser atau ganti perangkat dapat menghilangkan data. Unduh backup JSON secara berkala dan simpan terpisah. Jangan memasukkan data rahasia ke perangkat bersama.
+## Fitur
+Riwayat terpisah per kalkulator, penyimpanan otomatis di browser, pengaturan normalitas dan presisi desimal, baris dinamis, baris kosong/tidak lengkap dilewati, backup dan pemulihan JSON. FFA memiliki OCR bantuan dan ekspor foto sederhana.
 
-## GitHub Pages
-Unggah seluruh isi ZIP ke root repository, termasuk `.github/workflows/deploy.yml`, lalu pastikan Settings → Pages menggunakan GitHub Actions.
+## Deploy GitHub Pages
+1. Unggah isi ZIP ke branch `main`.
+2. Pastikan workflow `.github/workflows/deploy.yml` ikut terunggah.
+3. Settings > Pages > Source: GitHub Actions.
+4. Tunggu workflow selesai.
+
+## Catatan
+Penyimpanan otomatis berada di browser/perangkat yang digunakan, bukan cloud. Unduh backup secara berkala. OCR dapat keliru, terutama untuk tulisan tangan; verifikasi angka sebelum dipakai. Hasil kalkulasi perlu diverifikasi dengan metode dan SOP laboratorium.
